@@ -13,7 +13,6 @@ const examSchema = new Schema({
     lectureName: {
         type: String,
         required: true,
-        unique: true,
         trim: true,
         minlength: 3
     },
