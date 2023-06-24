@@ -78,23 +78,32 @@ router.route('/update/:id').put((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/addNote/:id').post((req, res) => {
-    const { studentIds, notes } = req.body;
+router.post('/updateExamNotes/:examId', async (req, res) => {
+    const { examId } = req.params;
+    const { studentMarks } = req.body;
 
-    if (!Array.isArray(studentIds) || !Array.isArray(notes) || studentIds.length !== notes.length) {
-        return res.status(400).json('Invalid request body');
+    console.log('Received Notes', studentMarks);
+  
+    try {
+      const exam = await Exam.findById(examId);
+      if (!exam) {
+        return res.status(404).json('Exam not found');
+      }
+  
+      const updatedNotes = new Map();
+
+      for (const [studentId, mark] of Object.entries(studentMarks)) {
+        updatedNotes.set(studentId, mark); 
+      };
+  
+      exam.notes = updatedNotes;
+      const savedExam = await exam.save();
+  
+      res.json(savedExam);
+    } catch (error) {
+      console.error('Error updating exam notes:', error);
+      res.status(400).json('Error updating exam notes');
     }
-
-    const updates = studentIds.map((studentId, index) => ({
-        updateOne: {
-        filter: { _id: studentId },
-        update: { $set: { note: notes[index] } }
-        }
-    }));
-
-    Student.bulkWrite(updates)
-        .then(() => res.json('Notes added successfully'))
-        .catch((err) => res.status(400).json('Error: ' + err));
-});
+  });
 
 module.exports = router;

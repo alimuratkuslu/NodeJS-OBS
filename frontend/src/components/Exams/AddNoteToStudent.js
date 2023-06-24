@@ -6,7 +6,7 @@ import Navbar from '../Navbar';
 const AddNoteToStudent = () => {
   const { examId } = useParams();
   const [students, setStudents] = useState([]);
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState({});
 
   useEffect(() => {
     fetchStudents();
@@ -23,26 +23,18 @@ const AddNoteToStudent = () => {
   };
 
   const handleNoteChange = (e, studentId) => {
-    const updatedNotes = [...notes];
-    const noteIndex = updatedNotes.findIndex((note) => note.studentId === studentId);
-    if (noteIndex !== -1) {
-      updatedNotes[noteIndex].note = e.target.value;
-    } else {
-      updatedNotes.push({ studentId, note: e.target.value });
-    }
+    const updatedNotes = { ...notes };
+    updatedNotes[studentId] = parseInt(e.target.value); 
     setNotes(updatedNotes);
   };
-
-  // Endpoint Yazılmalı
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post('/students/notes', notes);
+      await axios.post(`/exams/updateExamNotes/${examId}`, { studentMarks: notes });
       console.log('Notes added successfully!');
-      
-      setNotes([]);
+      setNotes({});
     } catch (error) {
       console.error('Error adding notes:', error);
     }
@@ -71,7 +63,7 @@ const AddNoteToStudent = () => {
                 <td>
                   <input
                     type="text"
-                    value={notes.find((note) => note.studentId === student._id)?.note || ''}
+                    value={notes[student._id] || ''}
                     onChange={(e) => handleNoteChange(e, student._id)}
                   />
                 </td>
