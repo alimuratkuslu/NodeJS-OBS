@@ -38,7 +38,6 @@ const ExamList = () => {
                 <tr>
                     <th>Exam Number</th>
                     <th>Lecture Name</th>
-                    <th>Mark</th>
                     <th>Date</th>
                     <th>Type</th>
                     <th>Edit</th>
@@ -49,7 +48,6 @@ const ExamList = () => {
                 <tr key={exam._id}>
                   <td>{exam.examNumber}</td>
                   <td>{exam.lectureName}</td>
-                  <td>{exam.mark}</td>
                   <td>{new Date(exam.date).toLocaleDateString()}</td>
                   <td>{exam.type}</td>
                   <td>

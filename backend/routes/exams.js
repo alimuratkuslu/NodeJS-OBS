@@ -11,13 +11,11 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const examNumber = req.body.examNumber;
     const lectureName = req.body.lectureName;
-    const mark = req.body.mark;
     const date = req.body.date;
     const type = req.body.type;
 
     const newExam = new Exam({examNumber,
          lectureName,
-         mark,
          date,
          type, });
 
@@ -70,7 +68,6 @@ router.route('/update/:id').put((req, res) => {
         .then(exam => {
             exam.examNumber = req.body.examNumber;
             exam.lectureName = req.body.lectureName;
-            exam.mark = req.body.mark;
             exam.date = req.body.date;
             exam.type = req.body.type;
 

@@ -92,6 +92,19 @@ const AddStudentToLecture = () => {
     }
   };
 
+  const getStudentsInLecture = () => {
+    if (!lectureData || !students) {
+      return [];
+    }
+
+    const lectureId = lectureData._id;
+
+    return students.filter((student) => {
+      const lectureIds = student.lectures.map((lecture) => lecture._id);
+      return lectureIds.includes(lectureId);
+    });
+  };
+
   return (
     <div>
       <Navbar />
@@ -120,31 +133,38 @@ const AddStudentToLecture = () => {
               ) : (
                 <p>Loading Professor Data...</p>
               )}
+              <Grid item xs={12} md={6}>
+                <Typography variant="h6" component="p">Enrolled Students:</Typography>
+                {getStudentsInLecture().map((student) => (
+                  <Typography key={student._id} component="p">
+                    {student.firstName} {student.lastName}
+                  </Typography>
+                ))}
+              </Grid>
             </Grid>
           </CardContent>
         </Card>
       ) : (
         <p>Loading Lecture Data...</p>
       )}
-
       <br />
-
-        <Grid item xs={6} style={{ marginLeft: '20px' }}>
-            <InputLabel id="student-label">Students</InputLabel>
-            <Select
-                labelId="student-label"
-                value={selectedStudent}
-                onChange={(e) => setSelectedStudent(e.target.value)}
-                fullWidth
-                required
-            >
-                {students.map((student) => (
-                <MenuItem key={student._id} value={student._id}>
-                    {student.firstName} {student.lastName}
-                </MenuItem>
-                ))}
-            </Select>
-        </Grid>
+      <br />
+      <Grid item xs={6} style={{ marginLeft: '20px' }}>
+          <InputLabel id="student-label">Students</InputLabel>
+          <Select
+              labelId="student-label"
+              value={selectedStudent}
+              onChange={(e) => setSelectedStudent(e.target.value)}
+              fullWidth
+              required
+          >
+              {students.map((student) => (
+              <MenuItem key={student._id} value={student._id}>
+                  {student.firstName} {student.lastName}
+              </MenuItem>
+              ))}
+          </Select>
+      </Grid>
         <br />
         <Grid item xs={12} style={{ marginLeft: '20px' }}>
               <Button type="submit" variant="contained" color="primary" onClick={handleAddStudent}>

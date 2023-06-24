@@ -16,10 +16,6 @@ const examSchema = new Schema({
         trim: true,
         minlength: 3
     },
-    mark: {
-        type: Number,
-        default: 0,
-    },
     date: {
         type: Date,
         required: true,
@@ -28,6 +24,11 @@ const examSchema = new Schema({
         type: String,
         enum: ['Midterm', 'Final'],
         required: true,
+    },
+    notes: {
+        type: Map,
+        of: Number,
+        default: {},
     },
 }, {
     timestamps: true,

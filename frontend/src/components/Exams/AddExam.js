@@ -13,7 +13,6 @@ import Navbar from '../Navbar';
 const AddExam = () => {
   const [examNumber, setExamNumber] = useState('');
   const [lectureName, setLectureName] = useState('');
-  const [mark, setMark] = useState('');
   const [date, setDate] = useState('');
   const [type, setType] = useState('');
   const [lectures, setLectures] = useState([]); 
@@ -38,7 +37,6 @@ const AddExam = () => {
     const newExam = {
       examNumber,
       lectureName,
-      mark,
       date,
       type
     };
@@ -49,7 +47,6 @@ const AddExam = () => {
       
       setExamNumber('');
       setLectureName('');
-      setMark('');
       setDate('');
       setType('');
     } catch (error) {
@@ -80,7 +77,7 @@ const AddExam = () => {
             <br />
             <br />
             <br />
-            <Grid item xs={6} style={{marginRight: '30px'}}>
+            <Grid item xs={12} style={{marginRight: '30px', marginBottom: '15px'}}>
               <InputLabel>Lecture Name</InputLabel>
                 <Select
                   label='Lecture Name'
@@ -96,16 +93,6 @@ const AddExam = () => {
                   ))}
                 </Select>
             </Grid>
-            <Grid item xs={2}>
-              <TextField
-                label="Mark"
-                value={mark}
-                onChange={(e) => setMark(e.target.value)}
-                fullWidth
-                required
-              />
-            </Grid>
-            <br />
             <br />
             <br />
             <br />
