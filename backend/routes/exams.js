@@ -57,6 +57,18 @@ router.route('/number/:examNumber').get((req, res) => {
         });
 });
 
+router.route('/lectureName').post((req, res) => {
+    const lectureName = req.body.lectureName;
+
+    Exam.find({ lectureName: lectureName })
+    .then(exams => {
+      res.json(exams);
+    })
+    .catch(err => {
+      res.status(400).json('Error: ' + err);
+    });
+});
+
 router.route('/:id').delete((req, res) => {
     Exam.findByIdAndDelete(req.params.id)
         .then(() => res.json('Exam Deleted'))

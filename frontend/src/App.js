@@ -4,6 +4,7 @@ import StudentList from './components/Students/StudentList';
 import AddStudent from './components/Students/AddStudent';
 import UpdateStudent from './components/Students/UpdateStudent';
 import LectureList from './components/Lectures/LectureList';
+import LectureDetails from './components/Lectures/LectureDetails';
 import AddLecture from './components/Lectures/AddLecture';
 import UpdateLecture from './components/Lectures/UpdateLecture';
 import ExamList from './components/Exams/ExamList';
@@ -26,6 +27,7 @@ function App() {
         <Route exact path='/lectures' element={<LectureList />} />
         <Route exact path='/lectures/add' element={<AddLecture />} />
         <Route exact path='/lectures/update/:id' element={<UpdateLecture />} />
+        <Route exact path='/lectures/details/:lectureId' element={<LectureDetails />} />
         <Route exact path='/exams' element={<ExamList />} />
         <Route exact path='/exams/add' element={<AddExam />} />
         <Route exact path='/professors' element={<ProfessorList />} />

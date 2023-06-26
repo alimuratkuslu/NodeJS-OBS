@@ -98,6 +98,9 @@ const LectureList = () => {
                     <Link to={`/lectures/addStudent/${lecture._id}`} className="btn btn-primary">
                       Add Student
                     </Link>
+                    <Link to={`/lectures/details/${lecture._id}`} className="btn btn-primary" style={{marginLeft: '10px'}}>
+                      Details
+                    </Link>
                     <br />
                     <Link to={`/lectures/update/${lecture._id}`}>
                       <IconButton>
