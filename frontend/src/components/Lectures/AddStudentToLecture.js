@@ -19,7 +19,7 @@ const AddStudentToLecture = () => {
   const [lectureData, setLectureData] = useState(null);
   const [professorData, setProfessorData] = useState(null);
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [professors, setProfessors] = useState([]);
   const [selectedProfessor, setSelectedProfessor] = useState('');
 
@@ -65,20 +65,24 @@ const AddStudentToLecture = () => {
   };
 
   const handleStudentChange = (event) => {
-    setSelectedStudent(event.target.value);
+    const selectedStudentIds = Array.isArray(event.target.value)
+      ? event.target.value
+      : Array.from(event.target.selectedOptions, (option) => option.value);
+    setSelectedStudents(selectedStudentIds);
   };
 
   const handleProfessorChange = (event) => {
     setSelectedProfessor(event.target.value);
   };
 
-  const handleAddStudent = async () => {
+  const handleAddStudents = async () => {
+    console.log('Started adding students');
     try {
-      await axios.post(`/lectures/addStudent/${lectureId}`, {
-        studentId: selectedStudent,
+      await axios.post(`/lectures/addStudents/${lectureId}`, {
+        studentIds: selectedStudents,
       });
     } catch (error) {
-      console.error('Error adding student to lecture:', error);
+      console.error('Error adding students to lecture:', error);
     }
   };
 
@@ -150,24 +154,25 @@ const AddStudentToLecture = () => {
       <br />
       <br />
       <Grid item xs={6} style={{ marginLeft: '20px' }}>
-          <InputLabel id="student-label">Students</InputLabel>
-          <Select
-              labelId="student-label"
-              value={selectedStudent}
-              onChange={(e) => setSelectedStudent(e.target.value)}
-              fullWidth
-              required
-          >
-              {students.map((student) => (
-              <MenuItem key={student._id} value={student._id}>
-                  {student.firstName} {student.lastName}
-              </MenuItem>
-              ))}
-          </Select>
+        <InputLabel id="student-label">Students</InputLabel>
+        <Select
+          labelId="student-label"
+          value={selectedStudents}
+          onChange={handleStudentChange}
+          fullWidth
+          multiple
+          required
+        >
+          {students.map((student) => (
+            <MenuItem key={student._id} value={student._id}>
+              {student.firstName} {student.lastName}
+            </MenuItem>
+          ))}
+        </Select>
       </Grid>
         <br />
         <Grid item xs={12} style={{ marginLeft: '20px' }}>
-              <Button type="submit" variant="contained" color="primary" onClick={handleAddStudent}>
+              <Button type="submit" variant="contained" color="primary" onClick={handleAddStudents}>
                 Add Student
               </Button>
         </Grid>

@@ -120,6 +120,48 @@ router.route('/addStudent/:id').post( async (req, res) => {
     }
 });
 
+// Add multiple Students to Lecture
+router.route('/addStudents/:id').post(async (req, res) => {
+    const studentIds = req.body.studentIds; 
+    const lectureId = req.params.id;
+  
+    try {
+      const lecture = await Lecture.findById(lectureId);
+      if (!lecture) {
+        throw new Error('Lecture not found');
+      }
+  
+      const students = await Student.find({ _id: { $in: studentIds } });
+      if (students.length !== studentIds.length) {
+        throw new Error('One or more students not found');
+      };
+
+      const updatedLecture = await Lecture.findOneAndUpdate(
+        { _id: lectureId },
+        { $push: { students: { $each: students } } },
+        { new: true }
+      ).populate('students');
+  
+      if (!updatedLecture) {
+        throw new Error('Error updating lecture');
+      };
+
+      for (const student of students) {
+        const updatedStudent = await Student.findOneAndUpdate(
+          { _id: student._id },
+          { $push: { lectures: updatedLecture } },
+          { new: true }
+        ).populate('lectures');
+      };
+      
+      res.json(updatedLecture);
+
+    } catch (err) {
+      res.status(400).json('Error: ' + err.message);
+    }
+  });
+  
+
 // Add Professor To Lecture
 router.route('/addProfessor/:id').post( async (req, res) => {
     const professorId = req.body.professorId; 
