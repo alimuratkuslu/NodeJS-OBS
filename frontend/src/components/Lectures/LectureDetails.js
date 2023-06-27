@@ -21,6 +21,7 @@ const LectureDetails = () => {
   const [lecture, setLecture] = useState(null);
   const [exams, setExams] = useState(null);
   const [students, setStudents] = useState({});
+  const [averageNote, setAverageNote] = useState(null);
   const classes = useStyles();
 
   useEffect(() => {
@@ -89,6 +90,16 @@ const LectureDetails = () => {
 
   const enrolledStudentIds = lecture.students;
 
+  let totalNotes = 0;
+  enrolledStudentIds.forEach((student) => {
+    const studentId = student._id;
+    const studentNotes = exams.map((exam) => exam.notes[studentId]);
+    const studentAverageNote = studentNotes.reduce((acc, note) => acc + note, 0) / studentNotes.length;
+    totalNotes += studentAverageNote;
+  });
+
+  const avgNote = totalNotes / enrolledStudentIds.length;
+
   return (
     <div>
       <Navbar />
@@ -104,7 +115,7 @@ const LectureDetails = () => {
             <Typography variant="body1">Lecture Name: {lecture.name} {lecture.lectureNumber}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body1">Enrolled Students:</Typography>
+            <Typography variant="h5">Enrolled Students:</Typography>
             <br />
                 <TableContainer component={Paper}>
                     <Table className={classes.table}>
@@ -135,6 +146,7 @@ const LectureDetails = () => {
                   <Typography variant="h6">Exam Number: {exam.examNumber}</Typography>
                   <Typography variant="body1">Date: {new Date(exam.date).toLocaleDateString('en-GB')}</Typography>
                   <Typography variant="body1">Type: {exam.type}</Typography>
+                  <Typography variant="body1">Average: {avgNote}</Typography>
                   <br />
                   <TableContainer component={Paper}>
                     <Table className={classes.table}>
