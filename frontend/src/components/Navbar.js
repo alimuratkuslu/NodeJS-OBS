@@ -45,6 +45,7 @@ const Navbar = () => {
             <Button color="inherit" component={Link} to="/professors">Professors</Button>
             <Button color="inherit" component={Link} to="/lectures">Lectures</Button>
             <Button color="inherit" component={Link} to="/exams">Exams</Button>
+            <Button color="inherit" component={Link} to="/assignments">Assignments</Button>
         </div>
       </Toolbar>
     </AppBar>
