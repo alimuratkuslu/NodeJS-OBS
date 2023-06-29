@@ -57,8 +57,8 @@ const AssignmentList = () => {
                 <tr key={assignment._id}>
                   <td>{assignment.name}</td>
                   <td>{assignment.description}</td>
-                  <td>{assignment.startDate}</td>
-                  <td>{assignment.endDate}</td>
+                  <td>{new Date(assignment.startDate).toLocaleDateString()}</td>
+                  <td>{new Date(assignment.endDate).toLocaleDateString()}</td>
                   <td>{assignment.lectureName}</td>
                   <td>
                     <Link to={`/assignments/update/${assignment._id}`}>

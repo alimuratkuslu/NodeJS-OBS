@@ -16,6 +16,7 @@ import AddStudentToLecture from './components/Lectures/AddStudentToLecture';
 import AddNoteToStudent from './components/Exams/AddNoteToStudent';
 import AssignmentList from './components/Assignments/AssignmentList';
 import AddAssignment from './components/Assignments/AddAssignment';
+import UpdateAssignment from './components/Assignments/UpdateAssignment';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path='/exams/addNote/:examId' element={<AddNoteToStudent />} />
         <Route exact path='/assignments' element={<AssignmentList />} />
         <Route exact path='/assignments/add' element={<AddAssignment />} />
+        <Route exact path='/assignments/update/:id' element={<UpdateAssignment />} />
       </Routes>
     </Router>
 

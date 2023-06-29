@@ -23,10 +23,10 @@ const assignmentSchema = new Schema({
       type: Date,
       required: true
     },
-    pdfFile: {
+    pdfFiles: [{
       data: Buffer,
       contentType: String
-    },
+    }],
     lectureName: {
       type: String,
       required: true,

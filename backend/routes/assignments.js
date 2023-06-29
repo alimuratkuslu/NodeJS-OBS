@@ -1,17 +1,5 @@
 const router = require('express').Router();
-const multer = require('multer');
 let Assignment = require('../models/assignment.model');
-
-const Storage = multer.diskStorage({
-    destination: 'uploads',
-    filename: (req, file, cb) => {
-        cb(null, Date.now + file.originalname);
-    }, 
-});
-
-const upload = multer({
-    storage: Storage
-}).single('testPdfFile');
 
 router.route('/').get((req, res) => {
     Assignment.find()
@@ -25,7 +13,6 @@ router.route('/add').post((req, res) => {
     const description = req.body.description;
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
-    const pdfFile = req.file;
     const lectureName = req.body.lectureName;
     const notes = req.body.notes;
 
@@ -33,9 +20,8 @@ router.route('/add').post((req, res) => {
         description,
         startDate,
         endDate,
-        pdfFile,
         lectureName,
-        notes,});
+        notes});
 
         newAssignment.save()
         .then(() => res.json('Assignment Added'))

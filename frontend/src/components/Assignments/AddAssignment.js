@@ -68,6 +68,9 @@ const AddAssignment = () => {
                 required
               />
             </Grid>
+            <br />
+            <br />
+            <br />
             <Grid item xs={12}>
               <TextField
                 label="Description"
@@ -75,8 +78,12 @@ const AddAssignment = () => {
                 onChange={(e) => setDescription(e.target.value)}
                 fullWidth
                 required
+                multiline 
+                rows={4}  
+                variant="outlined" 
               />
             </Grid>
+            <br />
             <br />
             <br />
             <br />
