@@ -56,4 +56,16 @@ router.route('/update/:id').put((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/lectureName').post((req, res) => {
+    const lectureName = req.body.lectureName;
+
+    Assignment.find({ lectureName: lectureName })
+    .then(assignments => {
+      res.json(assignments);
+    })
+    .catch(err => {
+      res.status(400).json('Error: ' + err);
+    });
+});
+
 module.exports = router;
