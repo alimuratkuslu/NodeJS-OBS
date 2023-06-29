@@ -20,8 +20,8 @@ const LectureDetails = () => {
   const { lectureId } = useParams();
   const [lecture, setLecture] = useState(null);
   const [exams, setExams] = useState(null);
+  const [assignments, setAssignments] = useState(null);
   const [students, setStudents] = useState({});
-  const [averageNote, setAverageNote] = useState(null);
   const classes = useStyles();
 
   useEffect(() => {
@@ -37,6 +37,9 @@ const LectureDetails = () => {
 
       const examsResponse = await axios.post('/exams/lectureName', {lectureName: lectureName});
       setExams(examsResponse.data);
+
+      const assignmentsResponse = await axios.post('/assignments/lectureName', {lectureName: lectureName});
+      setAssignments(assignmentsResponse.data);
 
       const studentIds = examsResponse.data.map((exam) => Object.keys(exam.notes));
       const uniqueStudentIds = [...new Set(studentIds.flat())];
@@ -84,7 +87,7 @@ const LectureDetails = () => {
     }
   };
 
-  if (!lecture || !exams) {
+  if (!lecture || !exams || !assignments) {
     return <div>Loading lecture details...</div>;
   }
 
@@ -168,6 +171,19 @@ const LectureDetails = () => {
                       </TableBody>
                     </Table>
                   </TableContainer>
+                </CardContent>
+              </Card>
+            ))}
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="h5">Assignments:</Typography>
+            {assignments.map((assignment) => (
+              <Card key={assignment._id}>
+                <CardContent>
+                  <Typography variant="h6">Name: {assignment.name}</Typography>
+                  <Typography variant="h6">Description: {assignment.description}</Typography>
+                  <Typography variant="body1">Start Date: {new Date(assignment.startDate).toLocaleDateString('en-GB')}</Typography>
+                  <Typography variant="body1">End Date: {new Date(assignment.endDate).toLocaleDateString('en-GB')}</Typography>
                 </CardContent>
               </Card>
             ))}
