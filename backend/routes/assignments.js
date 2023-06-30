@@ -1,5 +1,16 @@
 const router = require('express').Router();
+const multer = require('multer');
 let Assignment = require('../models/assignment.model');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname);
+    },
+  });
+  const upload = multer({ storage });
 
 router.route('/').get((req, res) => {
     Assignment.find()
@@ -66,6 +77,25 @@ router.route('/lectureName').post((req, res) => {
     .catch(err => {
       res.status(400).json('Error: ' + err);
     });
+});
+
+router.route('/pdfFile/:id', upload.single('pdfFile')).post((req, res) => {
+
+    const { path } = req.file;
+
+    Assignment.findById(req.params.id)
+        .then(assignment => {
+        if (!assignment) {
+            return res.status(404).json('Assignment not found');
+        }
+
+        assignment.pdfFiles.push(path);
+
+        assignment.save()
+            .then(() => res.json('Added PDF File'))
+            .catch(err => res.status(400).json('Error: ' + err));
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 module.exports = router;
