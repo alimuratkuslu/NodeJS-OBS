@@ -69,6 +69,9 @@ const AssignmentList = () => {
                     <IconButton onClick={() => handleDeleteAssignment(assignment._id)}>
                       <Delete />
                     </IconButton>
+                    <Link to={`/assignments/pdfFile/${assignment._id}`} className="btn btn-primary">
+                      Submit File
+                    </Link>
                   </td>
                 </tr>
               ))}

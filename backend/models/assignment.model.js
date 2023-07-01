@@ -24,8 +24,8 @@ const assignmentSchema = new Schema({
       required: true
     },
     pdfFiles: [{
-      data: Buffer,
-      contentType: String
+      type: Schema.Types.ObjectId,
+      ref: 'PdfFile'
     }],
     lectureName: {
       type: String,
