@@ -42,41 +42,43 @@ const AssignmentList = () => {
           </IconButton>
           Create Assignment
         </Link>
-        <table className='table table-striped'>
-            <thead className='thead-light'>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Lecture Name</th>
-                </tr>
-            </thead>
-            <tbody>
-              {assignments.map((assignment, index) => (
-                <tr key={assignment._id}>
-                  <td>{assignment.name}</td>
-                  <td>{assignment.description}</td>
-                  <td>{new Date(assignment.startDate).toLocaleDateString()}</td>
-                  <td>{new Date(assignment.endDate).toLocaleDateString()}</td>
-                  <td>{assignment.lectureName}</td>
-                  <td>
-                    <Link to={`/assignments/update/${assignment._id}`}>
-                      <IconButton>
-                        <Edit />
+        <div style={{marginLeft: '20px'}}>
+          <table className='table table-striped'>
+              <thead className='thead-light'>
+                  <tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Lecture Name</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {assignments.map((assignment, index) => (
+                  <tr key={assignment._id}>
+                    <td>{assignment.name}</td>
+                    <td>{assignment.description}</td>
+                    <td>{new Date(assignment.startDate).toLocaleDateString()}</td>
+                    <td>{new Date(assignment.endDate).toLocaleDateString()}</td>
+                    <td>{assignment.lectureName}</td>
+                    <td>
+                      <Link to={`/assignments/update/${assignment._id}`}>
+                        <IconButton>
+                          <Edit />
+                        </IconButton>
+                      </Link>
+                      <IconButton onClick={() => handleDeleteAssignment(assignment._id)}>
+                        <Delete />
                       </IconButton>
-                    </Link>
-                    <IconButton onClick={() => handleDeleteAssignment(assignment._id)}>
-                      <Delete />
-                    </IconButton>
-                    <Link to={`/assignments/pdfFile/${assignment._id}`} className="btn btn-primary">
-                      Submit File
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-        </table>
+                      <Link to={`/assignments/pdfFile/${assignment._id}`} className="btn btn-primary">
+                        Submit File
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+          </table>
+        </div>
     </div>
   );
 };

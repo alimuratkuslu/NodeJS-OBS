@@ -24,12 +24,14 @@ const professorsRouter = require('./routes/professors');
 const lecturesRouter = require('./routes/lectures');
 const examsRouter = require('./routes/exams');
 const assignmentsRouter = require('./routes/assignments');
+const filesRouter = require('./routes/pdffiles');
 
 app.use('/students', studentsRouter);
 app.use('/professors', professorsRouter);
 app.use('/lectures', lecturesRouter);
 app.use('/exams', examsRouter);
 app.use('/assignments', assignmentsRouter);
+app.use('/files', filesRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

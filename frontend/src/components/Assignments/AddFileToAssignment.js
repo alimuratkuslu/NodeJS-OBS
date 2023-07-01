@@ -10,6 +10,7 @@ const AddFileToAssignment = () => {
   const { id } = useParams(); 
   const [selectedFile, setSelectedFile] = useState([]);
   const [assignment, setAssignment] = useState(null);
+  const [assignmentFileIds, setAssignmentFileIds] = useState([]);
   const [successMessageOpen, setSuccessMessageOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -23,17 +24,46 @@ const AddFileToAssignment = () => {
       }
     };
 
+    const fetchAssignmentFiles = async () => {
+      try {
+        const response = await axios.get(`/assignments/pdfFiles/${id}`);
+        console.log(response.data);
+        setAssignmentFileIds(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     fetchAssignment();
+    fetchAssignmentFiles();
   }, [id]);
 
-  useEffect(() => {
-    console.log('In useEffect', selectedFile);
-  }, [selectedFile]);
+  const processFiles = async () => {
+    for (const fileId of assignmentFileIds) {
+      await handleDownloadFile(fileId);
+    }
+  };
 
+  const handleDownloadFile = async (fileId) => {
+    try {
+  
+      const response = await axios.get(`/files/${fileId}`);
+      const filePath = response.data.path;
+      
+      const link = document.createElement('a');
+      link.href = filePath;
+      link.setAttribute('download', `file_${fileId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleFileChange = (event) => {
     setSelectedFile([...selectedFile, event.target.files[0]]);
-    console.log('After setting the file', selectedFile);
   };
 
   const handleSubmit = async (event) => {
@@ -103,6 +133,30 @@ const AddFileToAssignment = () => {
                 </CardContent>
             </Card>
             )}
+            <br />
+            <div style={{marginLeft: '20px'}}>
+              {assignmentFileIds.length > 0 && (
+                <div>
+                  <h3>PDF Files:</h3>
+                  {assignmentFileIds.length > 0 ? (
+                    assignmentFileIds.map((file) => (
+                      <div key={file}>
+                        <Typography>File ID: {file}</Typography>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleDownloadFile(file)}
+                        >
+                          Download
+                        </Button>
+                      </div>
+                    ))
+                  ) : (
+                    <Typography>No PDF files available.</Typography>
+                  )}
+                </div>
+              )}
+            </div>
             <br />
             <br />
             <form onSubmit={handleSubmit} style={{ marginLeft: '20px' }}>

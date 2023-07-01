@@ -104,4 +104,19 @@ router.route('/pdfFile/:id').post(upload.single('pdfFile'), (req, res) => {
     .catch((err) => res.status(400).json('Error: ' + err));
 });
 
+router.route('/pdfFiles/:id').get((req, res) => {
+  const assignmentId = req.params.id;
+
+  Assignment.findById(assignmentId)
+    .then(assignment => {
+      if (!assignment) {
+        return res.status(404).json('Assignment not found');
+      }
+      
+      const pdfFiles = assignment.pdfFiles;
+      res.json(pdfFiles);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;
